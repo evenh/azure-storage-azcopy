@@ -24,13 +24,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-pipeline-go/pipeline"
 	"net/url"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/Azure/azure-pipeline-go/pipeline"
 
 	"github.com/Azure/azure-storage-azcopy/common"
 	"github.com/Azure/azure-storage-azcopy/ste"
@@ -110,8 +111,8 @@ var rootCmd = &cobra.Command{
 		// job is running. I.e. using this later with --include-after is _guaranteed_ to pick up all files that changed during
 		// or after this job
 		adjustedTime := timeAtPrestart.Add(-5 * time.Second)
-		startTimeMessage := fmt.Sprintf("ISO 8601 START TIME: to copy files that changed after this job started, use the parameter --%s=%s",
-			common.IncludeAfterFlagName, includeAfterDateFilter{}.FormatAsUTC(adjustedTime))
+		startTimeMessage := fmt.Sprintf("ISO 8601 START TIME: %s.\nTo copy files that changed after this job started, use the parameter --%s=%s",
+			includeAfterDateFilter{}.FormatAsUTC(adjustedTime), common.IncludeAfterFlagName, includeAfterDateFilter{}.FormatAsUTC(adjustedTime))
 		ste.JobsAdmin.LogToJobLog(startTimeMessage, pipeline.LogInfo)
 
 		// spawn a routine to fetch and compare the local application's version against the latest version available
