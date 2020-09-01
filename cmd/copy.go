@@ -1053,7 +1053,8 @@ func (cca *cookedCopyCmdArgs) processCopyJobPartOrders() (err error) {
 
 	// For OAuthToken credential, assign OAuthTokenInfo to CopyJobPartOrderRequest properly,
 	// the info will be transferred to STE.
-	if cca.credentialInfo.CredentialType == common.ECredentialType.OAuthToken() {
+	if cca.credentialInfo.CredentialType == common.ECredentialType.OAuthToken() ||
+		cca.credentialInfo.CredentialType == common.ECredentialType.AutoLogin() {
 		uotm := GetUserOAuthTokenManagerInstance()
 		// Get token from env var or cache.
 		if tokenInfo, err := uotm.GetTokenInfo(ctx); err != nil {
