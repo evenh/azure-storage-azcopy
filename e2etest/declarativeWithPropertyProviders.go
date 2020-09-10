@@ -45,7 +45,7 @@ type with struct {
 	nameValueMetadata  map[string]string
 	lastWriteTime      time.Time
 	creationTime       time.Time
-	smbAttributes      string // TODO: should this be uint or a custom struct? (that knows how to convert to/from textual, Storage and Windows representations?)
+	smbAttributes      uint32
 	smbPermissionsSddl string
 }
 
@@ -121,7 +121,7 @@ func (w with) createObjectProperties() *objectProperties {
 		populated = true
 		result.creationTime = &w.creationTime
 	}
-	if w.smbAttributes != "" {
+	if w.smbAttributes != 0 {
 		populated = true
 		result.smbAttributes = &w.smbAttributes
 	}

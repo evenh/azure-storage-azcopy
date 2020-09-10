@@ -90,7 +90,7 @@ func (a *testingAsserter) Assert(obtained interface{}, comp comparison, expected
 	// TODO: if obtained or expected is a pointer, do we want to dereference it before comparing?  Do we even need that in our codebase?
 	ok := false
 	if comp.equals {
-		ok = obtained == expected
+		ok = reflect.DeepEqual(obtained, expected)
 	} else {
 		ok = obtained != expected
 	}
@@ -369,7 +369,7 @@ func (tft TestFromTo) getValues(op Operation) []common.FromTo {
 			// temp
 			if fromTo.From() == common.ELocation.S3() ||
 				fromTo.From() == common.ELocation.BlobFS() || fromTo.To() == common.ELocation.BlobFS() {
-				continue // until we impelment the declarativeResoucreManagers
+				continue // until we implement the declarativeResourceManagers
 			}
 
 			// check filter

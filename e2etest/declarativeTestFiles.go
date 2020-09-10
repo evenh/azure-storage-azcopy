@@ -21,10 +21,12 @@
 package e2etest
 
 import (
+	"encoding/hex"
 	"fmt"
 	"github.com/Azure/azure-storage-azcopy/v10/cmd"
 	"github.com/Azure/azure-storage-azcopy/v10/common"
 	"math"
+	"reflect"
 	"strings"
 	"time"
 )
@@ -41,6 +43,25 @@ type contentHeaders struct {
 	contentMD5         []byte
 }
 
+func (h *contentHeaders) String() string {
+	var ret string
+	if h == nil {
+		return "[nil]"
+	}
+
+	ret += "[\n"
+
+	ret += fmt.Sprintln("cacheControl: " + reflect.ValueOf(h.cacheControl).Elem().String())
+	ret += fmt.Sprintln("contentDisposition: " + reflect.ValueOf(h.contentDisposition).Elem().String())
+	ret += fmt.Sprintln("contentEncoding: " + reflect.ValueOf(h.contentLanguage).Elem().String())
+	ret += fmt.Sprintln("contentType: " + reflect.ValueOf(h.contentType).Elem().String())
+	ret += fmt.Sprintln("contentMD5: " + hex.EncodeToString(h.contentMD5))
+
+	ret += "]\n"
+
+	return ret
+}
+
 // The full set of properties, dates, info etc, that we can potentially preserve for a file or folder
 // This is exposed to the declarativeResourceManagers, to create/check the objects.
 // All field are pointers or interfaces to make them nil-able. Nil means "unspecified".
@@ -51,7 +72,7 @@ type objectProperties struct {
 	nameValueMetadata  map[string]string
 	creationTime       *time.Time
 	lastWriteTime      *time.Time
-	smbAttributes      *string
+	smbAttributes      *uint32
 	smbPermissionsSddl *string
 }
 
